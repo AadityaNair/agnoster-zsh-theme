@@ -105,7 +105,9 @@ prompt_git() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue $PRIMARY_FG ' %~ '
+  DIR_LENGTH=3
+  DELIMITER='...'
+  prompt_segment blue $PRIMARY_FG "%$((DIR_LENGTH+1))(c:$DELIMITER/:)%${DIR_LENGTH}c"
 }
 
 # Status:
@@ -115,7 +117,7 @@ prompt_dir() {
 prompt_status() {
   local symbols
   symbols=()
-  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$CROSS"
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}$RETVAL"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}$LIGHTNING"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}$GEAR"
 
@@ -136,7 +138,7 @@ prompt_agnoster_main() {
   RETVAL=$?
   CURRENT_BG='NONE'
   prompt_status
-  prompt_context
+  #prompt_context
   prompt_virtualenv
   prompt_dir
   prompt_git
